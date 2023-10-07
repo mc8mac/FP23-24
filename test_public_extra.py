@@ -2,7 +2,8 @@ import pytest
 import proj1 as fp # <--- Change the name projectoFP to the file name with your project
 
 # Testes públicos extra para o projeto 1 de FP (2023-2024)
-# by Marcos Machado, 2023-2024
+# by Marcos Machado
+# Git: @mc8mac
 
 
 class TestEhTerritorio:
