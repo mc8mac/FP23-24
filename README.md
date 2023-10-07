@@ -18,7 +18,3 @@ In this first "Fundamentos da Programação" project, students will develop func
 
 1. Run the following command: `pytest test_public_extra.py`
 2. If this doesn't work run the following command: `python -m pytest -vv ./test_public_extra.py`
-
-### Contributors
-
-Marcos Machado (LERC/IST)
