@@ -10,10 +10,15 @@ In this first "Fundamentos da Programação" project, students will develop func
 ### How to Install
 
 1. Install pytest or run the following command on your terminal: `pip install pytest`.
-2. Download test_public_extra.py .
+2. Download **test_public_extra.py**.
 3. Put the file in the same folder as your project file.
+4. Change "projName" on **test_public_extra.py** to the name of your project file.
 
 ### How to Run Tests
 
 1. Run the following command: `pytest test_public_extra.py`
 2. If this doesn't work run the following command: `python -m pytest -vv ./test_public_extra.py`
+
+### Contributors
+
+Marcos Machado (LERC/IST)
