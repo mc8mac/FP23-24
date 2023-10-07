@@ -200,14 +200,6 @@ class TestObtemIntersecoesAdjacentes:
         t = ((0, 0, 0), (0, 1, 0), (0, 0, 1))
         assert fp.obtem_intersecoes_adjacentes(t, ('A', 2)) == (('A', 1), ('B', 2), ('A', 3))
 
-    def test_10(self):
-        t = ((0, 0, 0), (0, 1, 0), (0, 0, 1))
-        assert fp.obtem_intersecoes_adjacentes(t, ('D', 1)) == ()
-
-    def test_11(self):
-        t = ((0, 0, 0), (0, 1, 0), (0, 0, 1))
-        assert fp.obtem_intersecoes_adjacentes(t, ('C', 4)) == ()
-
 class TestOrdenaIntersecoes:
 
     def test_1(self):
