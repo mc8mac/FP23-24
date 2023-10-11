@@ -53,7 +53,11 @@ class TestEhTerritorio:
         assert not fp.eh_territorio(t)
 
     def test12(self):
-        t = tuple(tuple(0,1.0))
+        t = ((1,1.0),),
+        assert not fp.eh_territorio(t)
+
+    def test13(self):
+        t = ((True,True),),
         assert not fp.eh_territorio(t)
     
 class TestObtemUltimaIntersecao:
