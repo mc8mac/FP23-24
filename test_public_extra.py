@@ -51,6 +51,10 @@ class TestEhTerritorio:
     def test_11(self): # Large territory
         t = tuple(tuple(1 for _ in range(99)) for _ in range(27))
         assert not fp.eh_territorio(t)
+
+    def test12(self):
+        t = tuple(tuple(0,1.0))
+        assert not fp.eh_territorio(t)
     
 class TestObtemUltimaIntersecao:
 
