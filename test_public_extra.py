@@ -128,6 +128,9 @@ class TestEhIntersecao:
     def test_14(self):
         assert not fp.eh_intersecao((1,))
 
+    def test_15(self):
+        assert not fp.eh_intersecao('A',1.0)
+
 class TestEhIntersecaoValida:
 
     def test_1(self):
