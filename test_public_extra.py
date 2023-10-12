@@ -329,6 +329,20 @@ class TestObtemCadeia:
         c = (('A', 1), ('A', 2))
         assert fp.obtem_cadeia(t, ('A',1)) == c
 
+    def test_6(self):
+        t = (0,1,0,1)
+        c = ('A', 1),
+        with pytest.raises(ValueError) as excinfo:
+            fp.obtem_cadeia(t, c)
+            assert "obtem_cadeia: argumentos invalidos" == str(excinfo.value)
+
+    def test_7(self):
+        t = ((0,0,1,1,1), (1,1,1,0,0),(0,0,0,0,1),(0,0,0,1,1), (0,1,1,1,0))
+        c = ("F",6),
+        with pytest.raises(ValueError) as excinfo:
+            fp.obtem_cadeia(t, c)
+            assert "obtem_cadeia: argumentos invalidos" == str(excinfo.value)
+
 class TestObtemVale:
 
     def test_1(self):
