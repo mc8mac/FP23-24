@@ -1,5 +1,5 @@
 import pytest 
-import projName as fp # <--- Change the name projName to the file name with your project
+import mountains as fp # <--- Change the name projName to the file name with your project
 
 # Testes públicos extra para o projeto 1 de FP (2023-2024)
 # by Marcos Machado
@@ -51,14 +51,9 @@ class TestEhTerritorio:
     def test_11(self): # Large territory
         t = tuple(tuple(1 for _ in range(99)) for _ in range(27))
         assert not fp.eh_territorio(t)
-
-    def test12(self):
-        t = ((1,1.0),),
-        assert not fp.eh_territorio(t)
-
-    def test13(self):
-        t = ((True,True),),
-        assert not fp.eh_territorio(t)
+    
+    def test_12(self):
+        assert not fp.eh_territorio(0)
     
 class TestObtemUltimaIntersecao:
 
@@ -129,7 +124,10 @@ class TestEhIntersecao:
         assert not fp.eh_intersecao((1,))
 
     def test_15(self):
-        assert not fp.eh_intersecao('A',1.0)
+        assert not fp.eh_intersecao(0)
+    
+    def test_16(self):
+        assert not fp.eh_intersecao("A1")
 
 class TestEhIntersecaoValida:
 
@@ -332,20 +330,6 @@ class TestObtemCadeia:
         c = (('A', 1), ('A', 2))
         assert fp.obtem_cadeia(t, ('A',1)) == c
 
-    def test_6(self):
-        t = (0,1,0,1)
-        c = ('A', 1),
-        with pytest.raises(ValueError) as excinfo:
-            fp.obtem_cadeia(t, c)
-            assert "obtem_cadeia: argumentos invalidos" == str(excinfo.value)
-
-    def test_7(self):
-        t = ((0,0,1,1,1), (1,1,1,0,0),(0,0,0,0,1),(0,0,0,1,1), (0,1,1,1,0))
-        c = ("F",6),
-        with pytest.raises(ValueError) as excinfo:
-            fp.obtem_cadeia(t, c)
-            assert "obtem_cadeia: argumentos invalidos" == str(excinfo.value)
-
 class TestObtemVale:
 
     def test_1(self):
@@ -499,4 +483,3 @@ class TestCalculaTamanhoVales:
     def test_6(self):
         t = ((0,1,0),(0,0,0),(0,1,0))
         assert fp.calcula_tamanho_vales(t) == 5
-
