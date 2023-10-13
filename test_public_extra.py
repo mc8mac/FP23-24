@@ -52,13 +52,16 @@ class TestEhTerritorio:
         t = tuple(tuple(1 for _ in range(99)) for _ in range(27))
         assert not fp.eh_territorio(t)
 
-    def test12(self):
+    def test_12(self):
         t = ((1,1.0),),
         assert not fp.eh_territorio(t)
 
-    def test13(self):
+    def test_13(self):
         t = ((True,True),),
         assert not fp.eh_territorio(t)
+        
+    def test_14(self):
+        assert not fp.eh_territorio(0)
     
 class TestObtemUltimaIntersecao:
 
@@ -130,6 +133,12 @@ class TestEhIntersecao:
 
     def test_15(self):
         assert not fp.eh_intersecao('A',1.0)
+        
+    def test_16(self):
+        assert not fp.eh_intersecao(0)
+    
+    def test_17(self):
+        assert not fp.eh_intersecao("A1")
 
 class TestEhIntersecaoValida:
 
@@ -499,4 +508,3 @@ class TestCalculaTamanhoVales:
     def test_6(self):
         t = ((0,1,0),(0,0,0),(0,1,0))
         assert fp.calcula_tamanho_vales(t) == 5
-
