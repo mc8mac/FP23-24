@@ -1,4 +1,5 @@
 import pytest
+import sys
 from proj2 import * # <--- Change the name projectoFP to the file name with your project
 
 # Github: @mc8mac
@@ -515,12 +516,14 @@ class TestMarcosObtemTerritorios:
         ib = ("B1","A2","B2","A4","B4","C4","D4","D3","D2","D1","F1","F2","F3","F4","F5","F6","E6","D6","C6","B6","A6","A8","B8","C8","D8","E8","F8","G8","H8","H7","H6","H5","H4","H3","H2","H1","I9","G7","E5","C3")
         ib = tuple(str_para_intersecao(x) for x in ib)
         g = cria_goban(9,ib,())
-        answer = ((['A', 1],), (['A', 3], ['B', 3]), (['A', 5], ['B', 5], ['C', 5], ['D', 5]), (['A', 7], ['B', 7], ['C', 7], ['D', 7], ['E', 7], ['F', 7]), (['A', 9], ['B', 9], ['C', 9], ['D', 9], ['E', 9], ['F', 9], ['G', 9], ['H', 9]), (['C', 1], ['C', 2]), (['E', 1], ['E', 2], ['E', 3], ['E', 4]), (['G', 1], ['G', 2], ['G', 3], ['G', 4], ['G', 5], ['G', 6]), (['I', 1], ['I', 2], ['I', 3], ['I', 4], ['I', 5], ['I', 6], ['I', 7], ['I', 8]))
+        answer = (("A1",), ("A3", "B3"), ("A5", "B5", "C5", "D5"), ("A7", "B7", "C7", "D7", "E7", "F7"), ("A9", "B9", "C9", "D9", "E9", "F9", "G9", "H9"), ("C1", "C2"), ("E1", "E2", "E3", "E4"), ("G1", "G2", "G3", "G4", "G5", "G6"), ("I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8"))
+        answer = tuple(tuple(str_para_intersecao(j) for j in i) for i in answer)
         assert obtem_territorios(g) == answer
     
     def test_2(self):
         g = cria_goban(9,(),())
-        answer = ((['A', 1], ['B', 1], ['C', 1], ['D', 1], ['E', 1], ['F', 1], ['G', 1], ['H', 1], ['I', 1], ['A', 2], ['B', 2], ['C', 2], ['D', 2], ['E', 2], ['F', 2], ['G', 2], ['H', 2], ['I', 2], ['A', 3], ['B', 3], ['C', 3], ['D', 3], ['E', 3], ['F', 3], ['G', 3], ['H', 3], ['I', 3], ['A', 4], ['B', 4], ['C', 4], ['D', 4], ['E', 4], ['F', 4], ['G', 4], ['H', 4], ['I', 4], ['A', 5], ['B', 5], ['C', 5], ['D', 5], ['E', 5], ['F', 5], ['G', 5], ['H', 5], ['I', 5], ['A', 6], ['B', 6], ['C', 6], ['D', 6], ['E', 6], ['F', 6], ['G', 6], ['H', 6], ['I', 6], ['A', 7], ['B', 7], ['C', 7], ['D', 7], ['E', 7], ['F', 7], ['G', 7], ['H', 7], ['I', 7], ['A', 8], ['B', 8], ['C', 8], ['D', 8], ['E', 8], ['F', 8], ['G', 8], ['H', 8], ['I', 8], ['A', 9], ['B', 9], ['C', 9], ['D', 9], ['E', 9], ['F', 9], ['G', 9], ['H', 9], ['I', 9]),)
+        answer = (('A1',), ('A3', 'B3'), ('A5', 'B5', 'C5', 'D5'), ('A7', 'B7', 'C7', 'D7', 'E7', 'F7'), ('A9', 'B9', 'C9', 'D9', 'E9', 'F9', 'G9', 'H9'), ('C1', 'C2'), ('E1', 'E2', 'E3', 'E4'), ('G1', 'G2', 'G3', 'G4', 'G5', 'G6'), ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'))
+        answer = tuple(tuple(str_para_intersecao(j) for j in i) for i in answer)
         assert obtem_territorios(g) == answer
 
 class TestMarcosObtemAdjacentesDiferentes:
@@ -591,9 +594,52 @@ class TestMarcosCalculaPontos:
         answer = (57, 24)
         assert calcula_pontos(g) == answer
 
-class TestMarcosEhJogadaValida:
-    def test_1(self):
-        pass
+class TestMarcosEhJogadaLegal:
+# A verificar: ==========================================
+# a intersecao tem de ser válida                        |
+# a intersecao tem de estar vazia                       |
+# ao realizar a jogada, a pedra tem de ter liberdade    |
+# ao finalizar a jogada, o goban != l                   |
+# =======================================================
+    def test_1(self): # Intersecao invalida
+        g = cria_goban_vazio(9)
+        l = cria_copia_goban(g)
+        assert not eh_jogada_legal(g,cria_intersecao("K",1),cria_pedra_branca(),l)
+    
+    def test_2(self): # Intersecao ocupada
+        g = cria_goban_vazio(9)
+        coloca_pedra(g,cria_intersecao("A",1),cria_pedra_branca())
+        l = cria_copia_goban(g)
+        assert not eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_branca(),l)
+    
+    def test_3(self): # Regra do KO
+        g = cria_goban_vazio(9)
+        copy = cria_copia_goban(g)
+        coloca_pedra(copy,cria_intersecao("A",1),cria_pedra_branca())
+        assert not eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_branca(),copy)
+
+    def test_4(self): # Regra do Suicidio
+        ib = "A2,B1,B2".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        g = cria_goban(9,ib,())
+        l = cria_copia_goban(g)
+        assert not eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_preta(),l)
+
+    def test_5(self): # Sem liberdade na pedra mas com liberdade na cadeia
+        ib = "A2,B1,B2".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        g = cria_goban(9,ib,())
+        l = cria_copia_goban(g)
+        assert eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_branca(),l)
+    
+    def test_6(self): # Coloca pedra sem liberdade mas captura cadeia
+        ib = "A3,B3,C3,C2,C1".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        ip = "A2,B2,B1".split(",")
+        ip = tuple(str_para_intersecao(i) for i in ip)
+        g = cria_goban(9,ib,ip)
+        l = cria_copia_goban(g)
+        assert eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_branca(),l)
 
 # goban
 
@@ -602,6 +648,46 @@ class TestMarcosEhJogadaValida:
 # turno_jogador(goban,pedra,l
 # go(n,ib,ip)
 # =================================================================
+
+def turno_jogador_offline(board, pedra, last, input_jogo):
+    oldstdin = sys.stdin
+    sys.stdin = ReplaceStdIn(input_handle=input_jogo)
+    
+    oldstdout, newstdout = sys.stdout,  ReplaceStdOut()
+    sys.stdout = newstdout
+
+    try:
+        res = turno_jogador(board, pedra, last)
+        text = newstdout.output
+        return res, text
+    except ValueError as e:
+        raise e
+    finally:
+        sys.stdin = oldstdin
+        sys.stdout = oldstdout
+
+class ReplaceStdIn:
+    def __init__(self, input_handle):
+        self.input = input_handle.split('\n')
+        self.line = 0
+
+    def readline(self):
+        if len(self.input) == self.line:
+            return ''
+        result = self.input[self.line]
+        self.line += 1
+        return result
+
+class ReplaceStdOut:
+    def __init__(self):
+        self.output = ''
+
+    def write(self, s):
+        self.output += s
+        return len(s)
+
+    def flush(self):
+        return 
 
 REF_TEST_GOBAN = {"1":
 """   A B C D E F G H I
