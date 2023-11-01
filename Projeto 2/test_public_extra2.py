@@ -578,7 +578,7 @@ class TestMarcosCalculaPontos:
         ib = "A1,I9".split(",")
         ib = tuple(str_para_intersecao(i) for i in ib)
         g = cria_goban(9,ib,())
-        assert calcula_pontos(g) == (2,0)
+        assert calcula_pontos(g) == (81,0)
     
     def test_3(self):
         ib = "A1,I9".split(",")
@@ -595,7 +595,7 @@ class TestMarcosCalculaPontos:
         ip = tuple(str_para_intersecao(i) for i in ip)
         g = cria_goban(9,ib,ip)
         _ = jogada(g,cria_intersecao('E',5),cria_pedra_branca())
-        answer = (23, 24)
+        answer = (57, 24)
         assert calcula_pontos(g) == answer
 
 class TestMarcosEhJogadaLegal:
