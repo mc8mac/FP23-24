@@ -578,7 +578,7 @@ class TestMarcosCalculaPontos:
         ib = "A1,I9".split(",")
         ib = tuple(str_para_intersecao(i) for i in ib)
         g = cria_goban(9,ib,())
-        assert calcula_pontos(g) == (81,0)
+        assert calcula_pontos(g) == (2,0)
     
     def test_3(self):
         ib = "A1,I9".split(",")
@@ -595,7 +595,7 @@ class TestMarcosCalculaPontos:
         ip = tuple(str_para_intersecao(i) for i in ip)
         g = cria_goban(9,ib,ip)
         _ = jogada(g,cria_intersecao('E',5),cria_pedra_branca())
-        answer = (57, 24)
+        answer = (23, 24)
         assert calcula_pontos(g) == answer
 
 class TestMarcosEhJogadaLegal:
@@ -646,7 +646,7 @@ class TestMarcosEhJogadaLegal:
         assert eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_branca(),l)
 
 class TestMarcosTurnoJogador:
-    def test_1(self):
+    def test_1(self): # Regra do Suicídio | Intersecao invalida | Intersecao ocupada
         ib = "A2,B1,B2".split(",")
         ip = "A3,B3,C3,C2,C1".split(",")
         ib = tuple(str_para_intersecao(i) for i in ib)
@@ -656,6 +656,16 @@ class TestMarcosTurnoJogador:
         turno_jogador_offline(g,cria_pedra_branca(),l,"A1\nA2\nB2\nA3\nA4\n")
         assert goban_para_str(g) == REF_TEST_TURNO["1"]
 
+    def test_2(self): # Regra do KO
+        ib = "E5,E3,D4,F4".split(",")
+        ip = "D3,F3,E2".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        ip = tuple(str_para_intersecao(i) for i in ip)
+        g = cria_goban(9,ib,ip)
+        l = cria_copia_goban(g)
+        jogada(g,cria_intersecao("E",4),cria_pedra_preta())
+        turno_jogador_offline(g,cria_pedra_branca(),l,"E3\nE6")
+        assert goban_para_str(g) == REF_TEST_TURNO["2"]
 # goban
 
 # FUNCOES CHECKLIST ==============================================
@@ -779,4 +789,15 @@ REF_TEST_TURNO = {"1":
  3 X X X . . . . . .  3
  2 O O X . . . . . .  2
  1 . O X . . . . . .  1
+   A B C D E F G H I""","2":
+"""   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . O . . . .  6
+ 5 . . . . O . . . .  5
+ 4 . . . O X O . . .  4
+ 3 . . . X . X . . .  3
+ 2 . . . . X . . . .  2
+ 1 . . . . . . . . .  1
    A B C D E F G H I"""}
