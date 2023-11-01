@@ -1,5 +1,5 @@
 import pytest
-from projName import * # <--- Change the name projectoFP to the file name with your project
+from proj2 import * # <--- Change the name projectoFP to the file name with your project
 
 # Github: @mc8mac
 # 2023/2024
@@ -224,17 +224,6 @@ class TestMarcosOrdenaIntersecoes:
         answer = ("A1","A1","B1","C1","D1","E1","F1","G1","H1","I1","J1","K1","A2","A3", "A4","A5","A6","A7","A8","A9","A10","A18")
         assert ordena_intersecoes(i1) == tuple(str_para_intersecao(x) for x in answer)
 
-# Pedra
-
-# FUNCOES CHECKLIST ==============================================
-# eh_pedra(arg)
-# eh_pedra_branca(arg) | eh_pedra_preta(arg) | eh_pedra_vazia(arg)
-# pedras_iguais(pedra1,pedra2)
-# pedra_para_str(pedra)
-# eh_pedra_jogador(pedra):
-# eh_pedra_computador(pedra):
-# ================================================================
-
 class TestMarcosEhPedra:
     def test_1(self):
         assert eh_pedra(cria_pedra_branca())
@@ -290,6 +279,15 @@ class TestMarcosPedrasIguais:
         assert not pedras_iguais(cria_pedra_preta(),cria_pedra_neutra())
     
 class TestMarcosCriaGoban:
+# A verificar: ==========================================
+# n tem de ser inteiro                                  |
+# n tem de ser ou 9 ou 13 ou 19                         |
+# ib tem de ser um tuplo de intersecoes válidas ou ()   |
+# ip tem de ser um tuplo de intersecoes válidas ou ()   |
+# ib e ip nao podem ter intersecoes em comum            |
+# ib não pode ter intersecoes duplicadas                |
+# ip não pode ter intersecoes duplicadas                |
+# =======================================================
     def test_1(self):
         ip = 'A'
         ib = ()
@@ -319,17 +317,8 @@ class TestMarcosCriaGoban:
         with pytest.raises(ValueError) as excinfo:
             cria_goban(9,ib,ip)
         assert str(excinfo.value) == "cria_goban: argumentos invalidos"
-
-    def test_5(self):
-        ib = ("A2",)
-        ip = ("A2",)
-        ip = tuple(str_para_intersecao(x) for x in ip)
-        ib = tuple(str_para_intersecao(x) for x in ib)
-        with pytest.raises(ValueError) as excinfo:
-            cria_goban(9,ib,ip)
-        assert str(excinfo.value) == "cria_goban: argumentos invalidos"
         
-    def test_6(self):
+    def test_5(self):
         ib = ("A3",)
         ip = ("A2", "A2")
         ip = tuple(str_para_intersecao(x) for x in ip)
@@ -338,7 +327,7 @@ class TestMarcosCriaGoban:
             cria_goban(9,ib,ip)
         assert str(excinfo.value) == "cria_goban: argumentos invalidos"
     
-    def test_7(self):
+    def test_6(self):
         ib = ("A2", "A2")
         ip = ("A3",)
         ip = tuple(str_para_intersecao(x) for x in ip)
@@ -347,12 +336,12 @@ class TestMarcosCriaGoban:
             cria_goban(9,ib,ip)
         assert str(excinfo.value) == "cria_goban: argumentos invalidos"
     
-    def test_8(self):
+    def test_7(self):
         with pytest.raises(ValueError) as excinfo:
             cria_goban_vazio(None)
         assert str(excinfo.value) == "cria_goban_vazio: argumento invalido"
     
-    def test_9(self):
+    def test_8(self):
         with pytest.raises(ValueError) as excinfo:
             cria_goban_vazio("A")
         assert str(excinfo.value) == "cria_goban_vazio: argumento invalido"
