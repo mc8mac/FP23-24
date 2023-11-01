@@ -1,5 +1,5 @@
 import pytest
-from proj2 import * # <--- Change the name projectoFP to the file name with your project
+from projName import * # <--- Change the name projectoFP to the file name with your project
 
 # Github: @mc8mac
 # 2023/2024
@@ -508,6 +508,19 @@ class TestMarcosCopiaGobanGobansIguais:
         remove_pedra(g,cria_intersecao("A",1))
         assert gobans_iguais(g,g1)
 
+class TestMarcosGobanParaStr:
+    def test_1(self):
+        g = cria_goban_vazio(9)
+        assert goban_para_str(g) == REF_TEST_GOBAN["1"]
+    
+    def test_2(self):
+        ib = "C1,G1,C2,G2,C3,G3,A4,B4,C4,G4,H4,I4,A6,B6,C6,D6,E6,E7,F7,G7,H7,I7".split(",")
+        ip = "D1,F1,D2,E2,F2,D3,E3,F3,F4,D4,E4,A5,B5,C5,D5,F5,G5,H5,I5,I6,H6,G6,F6".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        ip = tuple(str_para_intersecao(i) for i in ip)
+        g = cria_goban(13,ib,ip)
+        assert goban_para_str(g) == REF_TEST_GOBAN["2"]
+
 class TestMarcosObtemTerritorios:
     def test_1(self):
         ib = ("B1","A2","B2","A4","B4","C4","D4","D3","D2","D1","F1","F2","F3","F4","F5","F6","E6","D6","C6","B6","A6","A8","B8","C8","D8","E8","F8","G8","H8","H7","H6","H5","H4","H3","H2","H1","I9","G7","E5","C3")
@@ -576,16 +589,58 @@ class TestMarcosCalculaPontos:
         ip = "A2,I8".split(",")
         ib = tuple(str_para_intersecao(i) for i in ib)
         ip = tuple(str_para_intersecao(i) for i in ip)
-        g = cria_goban(9,ib,ip)d
+        g = cria_goban(9,ib,ip)
         assert calcula_pontos(g) == (2,2)
+
+    def test_4(self):
+        ib = "C1,G1,C2,G2,C3,G3,A4,B4,C4,G4,H4,I4,A6,B6,C6,D6,E6,E7,F7,G7,H7,I7".split(",")
+        ip = "D1,F1,D2,E2,F2,D3,E3,F3,F4,D4,E4,A5,B5,C5,D5,F5,G5,H5,I5,I6,H6,G6,F6".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        ip = tuple(str_para_intersecao(i) for i in ip)
+        g = cria_goban(9,ib,ip)
+        _ = jogada(g,cria_intersecao('E',5),cria_pedra_branca())
+        answer = (57, 24)
+        assert calcula_pontos(g) == answer
+
+class TestMarcosEhJogadaValida:
+    def test_1(self):
+        pass
+
 # goban
 
 # FUNCOES CHECKLIST ==============================================
-# calcula_pontos(goban)
 # eh_jogada_legal(goban,intersecao,pedra,l)
 # turno_jogador(goban,pedra,l
 # go(n,ib,ip)
 # =================================================================
+
+REF_TEST_GOBAN = {"1":
+"""   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 . . . . . . . . .  3
+ 2 . . . . . . . . .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I""","2":
+"""   A B C D E F G H I J K L M
+13 . . . . . . . . . . . . . 13
+12 . . . . . . . . . . . . . 12
+11 . . . . . . . . . . . . . 11
+10 . . . . . . . . . . . . . 10
+ 9 . . . . . . . . . . . . .  9
+ 8 . . . . . . . . . . . . .  8
+ 7 . . . . O O O O O . . . .  7
+ 6 O O O O O X X X X . . . .  6
+ 5 X X X X . X X X X . . . .  5
+ 4 O O O X X X O O O . . . .  4
+ 3 . . O X X X O . . . . . .  3
+ 2 . . O X X X O . . . . . .  2
+ 1 . . O X . X O . . . . . .  1
+   A B C D E F G H I J K L M"""}
 
 REF_TEST_JOGADA = {"1":
 """   A B C D E F G H I
