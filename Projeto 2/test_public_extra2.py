@@ -67,12 +67,12 @@ class TestMarcosObtemCL:
         assert obtem_lin(i1) == 1
 
     def test_3(self):
-        i1 = cria_intersecao("Z",99)
-        assert obtem_col(i1) == "Z"
+        i1 = cria_intersecao("S",19)
+        assert obtem_col(i1) == "S"
 
     def test_4(self):
-        i1 = cria_intersecao("Z",99)
-        assert obtem_lin(i1) == 99
+        i1 = cria_intersecao("S",19)
+        assert obtem_lin(i1) == 19
 
 class TestMarcosEhIntersecao:
     
