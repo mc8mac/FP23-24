@@ -526,7 +526,7 @@ class TestMarcosObtemTerritorios:
         ip = tuple(str_para_intersecao(x) for x in ip)
         ib = tuple(str_para_intersecao(x) for x in ib)
         g = cria_goban(9,ib,ip)
-        answer = (('A1',), ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'), ('A7', 'B7', 'C7', 'D7', 'E7', 'F7'), ('A9', 'B9', 'C9', 'D9', 'E9', 'F9', 'G9', 'H9'))
+        answer = (('A1',), ('C1', 'C2'), ('E1', 'E2', 'E3', 'E4'), ('G1', 'G2', 'G3', 'G4', 'G5', 'G6'), ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'), ('A3', 'B3'), ('A5', 'B5', 'C5', 'D5'), ('A7', 'B7', 'C7', 'D7', 'E7', 'F7'), ('A9', 'B9', 'C9', 'D9', 'E9', 'F9', 'G9', 'H9'))
         answer = tuple(tuple(str_para_intersecao(j) for j in i) for i in answer)
         assert obtem_territorios(g) == answer
 
