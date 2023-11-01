@@ -353,7 +353,7 @@ class TestMarcosCriaGoban:
         assert str(excinfo.value) == "cria_goban_vazio: argumento invalido"
 
     def test_10(self):
-        ib = ("A20",)
+        ib = ("A13",)
         ip = tuple()
         ib = tuple(str_para_intersecao(x) for x in ib)
         with pytest.raises(ValueError) as excinfo:
@@ -362,7 +362,7 @@ class TestMarcosCriaGoban:
     
     def test_11(self):
         ib = ("A2",)
-        ip = ("A20",)
+        ip = ("A13",)
         ip = tuple(str_para_intersecao(x) for x in ip)
         ib = tuple(str_para_intersecao(x) for x in ib)
         with pytest.raises(ValueError) as excinfo:
