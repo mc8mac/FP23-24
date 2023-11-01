@@ -512,12 +512,11 @@ class TestMarcosGobanParaStr:
         assert goban_para_str(g) == REF_TEST_GOBAN["2"]
 
 class TestMarcosObtemTerritorios:
-    # ERRORS | FIXING THESE TESTS
     def test_1(self):
         ib = ("B1","A2","B2","A4","B4","C4","D4","D3","D2","D1","F1","F2","F3","F4","F5","F6","E6","D6","C6","B6","A6","A8","B8","C8","D8","E8","F8","G8","H8","H7","H6","H5","H4","H3","H2","H1","I9","G7","E5","C3")
         ib = tuple(str_para_intersecao(x) for x in ib)
         g = cria_goban(9,ib,())
-        answer = (("A1",), ("A3", "B3"), ("A5", "B5", "C5", "D5"), ("A7", "B7", "C7", "D7", "E7", "F7"), ("A9", "B9", "C9", "D9", "E9", "F9", "G9", "H9"), ("C1", "C2"), ("E1", "E2", "E3", "E4"), ("G1", "G2", "G3", "G4", "G5", "G6"), ("I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8"))
+        answer = (('A1',), ('C1', 'C2'), ('E1', 'E2', 'E3', 'E4'), ('G1', 'G2', 'G3', 'G4', 'G5', 'G6'), ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'), ('A3', 'B3'), ('A5', 'B5', 'C5', 'D5'), ('A7', 'B7', 'C7', 'D7', 'E7', 'F7'), ('A9', 'B9', 'C9', 'D9', 'E9', 'F9', 'G9', 'H9'))
         answer = tuple(tuple(str_para_intersecao(j) for j in i) for i in answer)
         assert obtem_territorios(g) == answer
     
@@ -527,7 +526,7 @@ class TestMarcosObtemTerritorios:
         ip = tuple(str_para_intersecao(x) for x in ip)
         ib = tuple(str_para_intersecao(x) for x in ib)
         g = cria_goban(9,ib,ip)
-        answer = (('A1',), ('A3', 'B3'), ('A5', 'B5', 'C5', 'D5'), ('A7', 'B7', 'C7', 'D7', 'E7', 'F7'), ('A9', 'B9', 'C9', 'D9', 'E9', 'F9', 'G9', 'H9'), ('C1', 'C2'), ('E1', 'E2', 'E3', 'E4'), ('G1', 'G2', 'G3', 'G4', 'G5', 'G6'), ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'))
+        answer = (('A1',), ('I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8'), ('A7', 'B7', 'C7', 'D7', 'E7', 'F7'), ('A9', 'B9', 'C9', 'D9', 'E9', 'F9', 'G9', 'H9'))
         answer = tuple(tuple(str_para_intersecao(j) for j in i) for i in answer)
         assert obtem_territorios(g) == answer
 
