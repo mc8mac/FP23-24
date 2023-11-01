@@ -139,8 +139,8 @@ class TestMarcosIntersecaoParaStr:
         assert intersecao_para_str(i1) == "A1"
 
     def test_2(self):
-        i1 = cria_intersecao("Z",99)
-        assert intersecao_para_str(i1) == "Z99"
+        i1 = cria_intersecao("S",19)
+        assert intersecao_para_str(i1) == "S19"
     
 class TestMarcosStrParaIntersecao:
     def test_1(self):
@@ -148,8 +148,8 @@ class TestMarcosStrParaIntersecao:
         assert str_para_intersecao(i1) == cria_intersecao("A",1)
     
     def test_2(self):
-        i1 = "Z99"
-        assert str_para_intersecao(i1) == cria_intersecao("Z",99)
+        i1 = "S19"
+        assert str_para_intersecao(i1) == cria_intersecao("S",99)
 
 class TestMarcosObtemIntersecoesAdjacentes:
     def test_1(self): # Canto cima esquerdo
@@ -512,6 +512,7 @@ class TestMarcosGobanParaStr:
         assert goban_para_str(g) == REF_TEST_GOBAN["2"]
 
 class TestMarcosObtemTerritorios:
+    # ERRORS | FIXING THESE TESTS
     def test_1(self):
         ib = ("B1","A2","B2","A4","B4","C4","D4","D3","D2","D1","F1","F2","F3","F4","F5","F6","E6","D6","C6","B6","A6","A8","B8","C8","D8","E8","F8","G8","H8","H7","H6","H5","H4","H3","H2","H1","I9","G7","E5","C3")
         ib = tuple(str_para_intersecao(x) for x in ib)
@@ -645,10 +646,20 @@ class TestMarcosEhJogadaLegal:
         l = cria_copia_goban(g)
         assert eh_jogada_legal(g,cria_intersecao("A",1),cria_pedra_branca(),l)
 
+class TestMarcosTurnoJogador:
+    def test_1(self):
+        ib = "A2,B1,B2".split(",")
+        ip = "A3,B3,C3,C2,C1".split(",")
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        ip = tuple(str_para_intersecao(i) for i in ip)
+        g = cria_goban(9,ib,ip)
+        l = cria_copia_goban(g)
+        turno_jogador_offline(g,cria_pedra_branca(),l,"A1\nA2\nB2\nA3\nA4\n")
+        assert goban_para_str(g) == REF_TEST_TURNO["1"]
+
 # goban
 
 # FUNCOES CHECKLIST ==============================================
-# eh_jogada_legal(goban,intersecao,pedra,l)
 # turno_jogador(goban,pedra,l
 # go(n,ib,ip)
 # =================================================================
@@ -756,4 +767,17 @@ REF_TEST_JOGADA = {"1":
  3 . . O X X X O . .  3
  2 . . O X X X O . .  2
  1 . . O X . X O . .  1
+   A B C D E F G H I"""}
+
+REF_TEST_TURNO = {"1":
+"""   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 O . . . . . . . .  4
+ 3 X X X . . . . . .  3
+ 2 O O X . . . . . .  2
+ 1 . O X . . . . . .  1
    A B C D E F G H I"""}
