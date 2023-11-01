@@ -149,7 +149,7 @@ class TestMarcosStrParaIntersecao:
     
     def test_2(self):
         i1 = "S19"
-        assert str_para_intersecao(i1) == cria_intersecao("S",99)
+        assert str_para_intersecao(i1) == cria_intersecao("S",19)
 
 class TestMarcosObtemIntersecoesAdjacentes:
     def test_1(self): # Canto cima esquerdo
