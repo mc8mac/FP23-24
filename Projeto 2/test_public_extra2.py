@@ -1,6 +1,6 @@
 import pytest
 import sys
-from proj2 import * # <--- Change the name projectoFP to the file name with your project
+from example import * # <--- Change the name projectoFP to the file name with your project
 
 # Github: @mc8mac
 # 2023/2024
@@ -657,10 +657,8 @@ class TestMarcosTurnoJogador:
         assert goban_para_str(g) == REF_TEST_TURNO["1"]
 
     def test_2(self): # Regra do KO
-        ib = "E5,E3,D4,F4".split(",")
-        ip = "D3,F3,E2".split(",")
-        ib = tuple(str_para_intersecao(i) for i in ib)
-        ip = tuple(str_para_intersecao(i) for i in ip)
+        ib = tuple("E5,E3,D4,F4".split(","))
+        ip = tuple("D3,F3,E2".split(","))
         g = cria_goban(9,ib,ip)
         l = cria_copia_goban(g)
         jogada(g,cria_intersecao("E",4),cria_pedra_preta())
@@ -669,7 +667,6 @@ class TestMarcosTurnoJogador:
 # goban
 
 # FUNCOES CHECKLIST ==============================================
-# turno_jogador(goban,pedra,l
 # go(n,ib,ip)
 # =================================================================
 
