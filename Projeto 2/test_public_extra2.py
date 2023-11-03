@@ -1,6 +1,6 @@
 import pytest
 import sys
-from proj2 import * # <--- Change the name projectoFP to the file name with your project
+from projName import * # <--- Change the name projectoFP to the file name with your project
 
 # Github: @mc8mac
 # 2023/2024
@@ -56,6 +56,11 @@ class TestMarcosCriaIntersecao:
         with pytest.raises(ValueError) as excinfo:
             cria_intersecao("A",float(1))
         assert str(excinfo.value) == "cria_intersecao: argumentos invalidos"
+    
+    def test_9(self):
+        i = cria_intersecao("A",1)
+        hashable = {i:1}
+        assert hashable[i] == 1
 
 class TestMarcosObtemCL:
     def test_1(self):
@@ -657,8 +662,8 @@ class TestMarcosTurnoJogador:
         assert goban_para_str(g) == REF_TEST_TURNO["1"]
 
     def test_2(self): # Regra do KO
-        ib = "E5,E3,D4,F4".split(",")
-        ip = "D3,F3,E2".split(",")
+        ib = tuple("E5,E3,D4,F4".split(","))
+        ip = tuple("D3,F3,E2".split(","))
         ib = tuple(str_para_intersecao(i) for i in ib)
         ip = tuple(str_para_intersecao(i) for i in ip)
         g = cria_goban(9,ib,ip)
@@ -666,12 +671,18 @@ class TestMarcosTurnoJogador:
         jogada(g,cria_intersecao("E",4),cria_pedra_preta())
         turno_jogador_offline(g,cria_pedra_branca(),l,"E3\nE6")
         assert goban_para_str(g) == REF_TEST_TURNO["2"]
-# goban
 
-# FUNCOES CHECKLIST ==============================================
-# turno_jogador(goban,pedra,l
-# go(n,ib,ip)
-# =================================================================
+class TestMarcosGo:
+    def test_1(self):
+        input_str = 'A1\nB1\nB2\nA2\nA1\nA3\nA1\nC1\nE5\nP\nP\n'
+        assert go_offline(9, (), (), input_str) == (False, REF_GO_PUBLIC_JOGO["1"])
+        
+    def test_2(self):
+        ib = 'C2', 'D2', 'E2', 'F2', 'G2', 'H2', 'B3', 'I3', 'B4', 'D4', 'E4', 'F4', 'B5', 'D5', 'G5', 'I5', 'B6', 'D6', 'E6', 'F6', 'G6', 'I6', 'C7', 'I7', 'C8', 'D8', 'E8', 'F8', 'G8', 'H8', 'I8'
+        ip = 'C3', 'D3', 'E3', 'F3', 'G3', 'C4', 'G4', 'H4', 'C5', 'H5', 'C6', 'H6', 'D7', 'E7', 'F7', 'G7', 'H7'
+        ib = tuple(str_para_intersecao(i) for i in ib)
+        ip = tuple(str_para_intersecao(i) for i in ip)
+        assert go_offline(9, ib, ip, 'E5\nF5\nE5\nP\nP\n') == (True, REF_GO_PUBLIC_JOGO["2"])
 
 def turno_jogador_offline(board, pedra, last, input_jogo):
     oldstdin = sys.stdin
@@ -682,6 +693,24 @@ def turno_jogador_offline(board, pedra, last, input_jogo):
 
     try:
         res = turno_jogador(board, pedra, last)
+        text = newstdout.output
+        return res, text
+    except ValueError as e:
+        raise e
+    finally:
+        sys.stdin = oldstdin
+        sys.stdout = oldstdout
+
+
+def go_offline(n, ib, ip, input_jogo):
+    oldstdin = sys.stdin
+    sys.stdin = ReplaceStdIn(input_handle=input_jogo)
+    
+    oldstdout, newstdout = sys.stdout,  ReplaceStdOut()
+    sys.stdout = newstdout
+
+    try:
+        res = go(n, ib, ip)
         text = newstdout.output
         return res, text
     except ValueError as e:
@@ -801,3 +830,230 @@ REF_TEST_TURNO = {"1":
  2 . . . . X . . . .  2
  1 . . . . . . . . .  1
    A B C D E F G H I"""}
+
+REF_GO_PUBLIC_JOGO = {"1":
+"""Branco (O) tem 0 pontos
+Preto (X) tem 0 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 . . . . . . . . .  3
+ 2 . . . . . . . . .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 0 pontos
+Preto (X) tem 81 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 . . . . . . . . .  3
+ 2 . . . . . . . . .  2
+ 1 X . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 1 pontos
+Preto (X) tem 1 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 . . . . . . . . .  3
+ 2 . . . . . . . . .  2
+ 1 X O . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 1 pontos
+Preto (X) tem 2 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 . . . . . . . . .  3
+ 2 . X . . . . . . .  2
+ 1 X O . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 3 pontos
+Preto (X) tem 1 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 . . . . . . . . .  3
+ 2 O X . . . . . . .  2
+ 1 . O . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 3 pontos
+Preto (X) tem 2 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 X . . . . . . . .  3
+ 2 O X . . . . . . .  2
+ 1 . O . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 3 pontos
+Preto (X) tem 2 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 X . . . . . . . .  3
+ 2 O X . . . . . . .  2
+ 1 O O . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 0 pontos
+Preto (X) tem 81 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . . . . . .  5
+ 4 . . . . . . . . .  4
+ 3 X . . . . . . . .  3
+ 2 . X . . . . . . .  2
+ 1 . . X . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 1 pontos
+Preto (X) tem 6 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . O . . . .  5
+ 4 . . . . . . . . .  4
+ 3 X . . . . . . . .  3
+ 2 . X . . . . . . .  2
+ 1 . . X . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 1 pontos
+Preto (X) tem 6 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . O . . . .  5
+ 4 . . . . . . . . .  4
+ 3 X . . . . . . . .  3
+ 2 . X . . . . . . .  2
+ 1 . . X . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 1 pontos
+Preto (X) tem 6 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . . . . . . . .  8
+ 7 . . . . . . . . .  7
+ 6 . . . . . . . . .  6
+ 5 . . . . O . . . .  5
+ 4 . . . . . . . . .  4
+ 3 X . . . . . . . .  3
+ 2 . X . . . . . . .  2
+ 1 . . X . . . . . .  1
+   A B C D E F G H I
+"""
+,"2":
+"""Branco (O) tem 62 pontos
+Preto (X) tem 17 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . O O O O O O O  8
+ 7 . . O X X X X X O  7
+ 6 . O X O O O O X O  6
+ 5 . O X O . . O X O  5
+ 4 . O X O O O X X .  4
+ 3 . O X X X X X . O  3
+ 2 . . O O O O O O .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 60 pontos
+Preto (X) tem 18 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . O O O O O O O  8
+ 7 . . O X X X X X O  7
+ 6 . O X O O O O X O  6
+ 5 . O X O X . O X O  5
+ 4 . O X O O O X X .  4
+ 3 . O X X X X X . O  3
+ 2 . . O O O O O O .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 62 pontos
+Preto (X) tem 17 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . O O O O O O O  8
+ 7 . . O X X X X X O  7
+ 6 . O X O O O O X O  6
+ 5 . O X O . O O X O  5
+ 4 . O X O O O X X .  4
+ 3 . O X X X X X . O  3
+ 2 . . O O O O O O .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 51 pontos
+Preto (X) tem 28 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . O O O O O O O  8
+ 7 . . O X X X X X O  7
+ 6 . O X . . . . X O  6
+ 5 . O X . X . . X O  5
+ 4 . O X . . . X X .  4
+ 3 . O X X X X X . O  3
+ 2 . . O O O O O O .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [O]:Branco (O) tem 51 pontos
+Preto (X) tem 28 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . O O O O O O O  8
+ 7 . . O X X X X X O  7
+ 6 . O X . . . . X O  6
+ 5 . O X . X . . X O  5
+ 4 . O X . . . X X .  4
+ 3 . O X X X X X . O  3
+ 2 . . O O O O O O .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+Escreva uma intersecao ou 'P' para passar [X]:Branco (O) tem 51 pontos
+Preto (X) tem 28 pontos
+   A B C D E F G H I
+ 9 . . . . . . . . .  9
+ 8 . . O O O O O O O  8
+ 7 . . O X X X X X O  7
+ 6 . O X . . . . X O  6
+ 5 . O X . X . . X O  5
+ 4 . O X . . . X X .  4
+ 3 . O X X X X X . O  3
+ 2 . . O O O O O O .  2
+ 1 . . . . . . . . .  1
+   A B C D E F G H I
+"""
+}
