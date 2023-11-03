@@ -664,18 +664,14 @@ class TestMarcosTurnoJogador:
     def test_2(self): # Regra do KO
         ib = tuple("E5,E3,D4,F4".split(","))
         ip = tuple("D3,F3,E2".split(","))
-<<<<<<< HEAD
         ib = tuple(str_para_intersecao(i) for i in ib)
         ip = tuple(str_para_intersecao(i) for i in ip)
-=======
->>>>>>> f4e5a631738993d29796c8571a49e24b4a9ac3b5
         g = cria_goban(9,ib,ip)
         l = cria_copia_goban(g)
         jogada(g,cria_intersecao("E",4),cria_pedra_preta())
         turno_jogador_offline(g,cria_pedra_branca(),l,"E3\nE6")
         assert goban_para_str(g) == REF_TEST_TURNO["2"]
 
-<<<<<<< HEAD
 class TestMarcosGo:
     def test_1(self):
         input_str = 'A1\nB1\nB2\nA2\nA1\nA3\nA1\nC1\nE5\nP\nP\n'
@@ -684,14 +680,7 @@ class TestMarcosGo:
     def test_2(self):
         ib = 'C2', 'D2', 'E2', 'F2', 'G2', 'H2', 'B3', 'I3', 'B4', 'D4', 'E4', 'F4', 'B5', 'D5', 'G5', 'I5', 'B6', 'D6', 'E6', 'F6', 'G6', 'I6', 'C7', 'I7', 'C8', 'D8', 'E8', 'F8', 'G8', 'H8', 'I8'
         ip = 'C3', 'D3', 'E3', 'F3', 'G3', 'C4', 'G4', 'H4', 'C5', 'H5', 'C6', 'H6', 'D7', 'E7', 'F7', 'G7', 'H7'
-        ib = tuple(str_para_intersecao(i) for i in ib)
-        ip = tuple(str_para_intersecao(i) for i in ip)
         assert go_offline(9, ib, ip, 'E5\nF5\nE5\nP\nP\n') == (True, REF_GO_PUBLIC_JOGO["2"])
-=======
-# FUNCOES CHECKLIST ==============================================
-# go(n,ib,ip)
-# =================================================================
->>>>>>> f4e5a631738993d29796c8571a49e24b4a9ac3b5
 
 def turno_jogador_offline(board, pedra, last, input_jogo):
     oldstdin = sys.stdin
@@ -839,7 +828,6 @@ REF_TEST_TURNO = {"1":
  2 . . . . X . . . .  2
  1 . . . . . . . . .  1
    A B C D E F G H I"""}
-<<<<<<< HEAD
 
 REF_GO_PUBLIC_JOGO = {"1":
 """Branco (O) tem 0 pontos
@@ -1067,5 +1055,3 @@ Preto (X) tem 28 pontos
    A B C D E F G H I
 """
 }
-=======
->>>>>>> f4e5a631738993d29796c8571a49e24b4a9ac3b5
